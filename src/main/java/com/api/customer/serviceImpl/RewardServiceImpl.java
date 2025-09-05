@@ -1,5 +1,6 @@
 package com.api.customer.serviceImpl;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,15 @@ import org.springframework.stereotype.Service;
 
 import com.api.customer.model.Transaction;
 import com.api.customer.repository.TransactionRepository;
-import com.api.customer.service.Reward;
 
+import com.api.customer.service.RewardService;
+
+import java.util.List;
+import java.time.LocalDate;
+import com.api.customer.model.Transaction;
+import com.api.customer.repository.TransactionRepository;
 @Service
-public class RewardImpl implements Reward {
+public class RewardServiceImpl implements RewardService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
@@ -39,8 +45,8 @@ public class RewardImpl implements Reward {
 			int points = calculatePoints(t.getAmount());
 
 			// Format month as YYYY-MM
-			String month = t.getTransactionDate().getYear() + "-"
-					+ String.format("%02d", t.getTransactionDate().getMonthValue());
+			String month = t.getDate().getYear() + "-"
+					+ String.format("%02d", t.getDate().getMonthValue());
 
 			customerRewards.putIfAbsent(customerId, new HashMap<>());
 			Map<String, Object> rewardsData = customerRewards.get(customerId);
@@ -70,5 +76,14 @@ public class RewardImpl implements Reward {
 		}
 		return points;
 	}
+	
+    @Override
+    public List<Transaction> getTransactionsByCustomerId(Long customerId) {
+        return transactionRepository.findByCustomerId(customerId);
+    }
 
+    @Override
+    public List<Transaction> getTransactionsByCustomerIdAndDateRange(Long customerId, LocalDate startDate, LocalDate endDate) {
+        return transactionRepository.findByCustomerIdAndDateBetween(customerId, startDate, endDate);
+    }
 }
