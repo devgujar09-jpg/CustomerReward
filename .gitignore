@@ -1,0 +1,16 @@
+.idea/
+.project
+.classpath
+.settings/
+.metadata/
+/target/
+*.log
+.DS_Store
+Thumbs.db
+/.apt_generated/
+/.apt_generated_tests/
+
+mvn/
+mvnw
+mvnw.cmd
+.mvn/wrapper/
